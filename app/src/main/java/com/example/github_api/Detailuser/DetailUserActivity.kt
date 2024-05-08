@@ -25,7 +25,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailUser : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
-    private val viewModel by viewModels<DetailViewModel>{
+    private val viewModel by viewModels<DetailViewModel> {
         DetailViewModel.Factory(DbModule(this))
     }
 
@@ -39,7 +39,6 @@ class DetailUser : AppCompatActivity() {
 //        get username from main activity
         val item: Item? = intent.getParcelableExtra<Item>("item")
         val username = item?.login ?: ""
-
         viewModel.getDetailUser(username)
         viewModel.resultDetailUser.observe(this) {
             when (it) {
@@ -63,49 +62,43 @@ class DetailUser : AppCompatActivity() {
         }
         viewModel.getDetailUser(username)
 
-
-        viewModel.resultSuccess.observe(this){
-            binding.BtnFavorite.changeIconColor(R.color.red)
+//        !set favorite button to change color when clicked
+        viewModel.resultSuccess.observe(this) {
+            binding.BtnFavorite.changeIconColor(R.color.colorPrimary)
         }
-        viewModel.resultFailFav.observe(this){
+        viewModel.resultFailFav.observe(this) {
             binding.BtnFavorite.changeIconColor(R.color.white)
         }
-
-
-        binding.BtnFavorite.setOnClickListener{
+        binding.BtnFavorite.setOnClickListener {
             viewModel.setFav(item)
-
         }
-
-        viewModel.findFavorite(item?.id ?: 0){
-            binding.BtnFavorite.changeIconColor(R.color.red)
-
+//        !check if item is favorite or not to change the color of favorite button
+        viewModel.findFavorite(item?.id ?: 0) {
+            binding.BtnFavorite.changeIconColor(R.color.colorPrimary)
         }
-
-//        create tab layout
+//        !create tab layout and view pager
         val fragments = mutableListOf<Fragment>(
-            FollowFragment.newInstance(FollowFragment.Followers_index),
-            FollowFragment.newInstance(FollowFragment.Following_index)
+            FollowFragment.newInstance(FollowFragment.Followers_index, username),
+            FollowFragment.newInstance(FollowFragment.Following_index, username)
         )
         val tittleFragments = mutableListOf(
             getString(R.string.followers),
             getString(R.string.following)
         )
-//        set adapter
+//        !set adapter to view pager and tab layout mediator
         val adapter = Pager(this, fragments)
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tableLayout, binding.viewPager) { tab, position ->
             tab.text = tittleFragments[position]
         }.attach()
-
-//        get followers and following count
+//        !get followers and following count
         binding.tableLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if(tab?.position == 0){
+                if (tab?.position == 0) {
                     viewModel.getFollowers(username)
-            } else{
-                viewModel.getFollowing(username)
-            }
+                } else {
+                    viewModel.getFollowing(username)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -115,41 +108,46 @@ class DetailUser : AppCompatActivity() {
             }
 
         })
-        // create following count
-        viewModel.resultFollowing.observe(this){
-            when(it){
+//        ! create following count
+        viewModel.resultFollowing.observe(this) {
+            when (it) {
                 is Results.Success<*> -> {
-                    val data = it.data as MutableList<Item> // Assuming Followers is the correct class
-                    binding.tableLayout.getTabAt(1)?.text = "${getString(R.string.following)} (${data.size})"
+                    val count = (it.data as? List<*>)?.size ?: 0
+                    binding.tableLayout.getTabAt(0)?.text =
+                        "${getString(R.string.following)} (${count})"
                 }
+
                 is Results.Error -> {
-                    // Handle error case
+                    Toast.makeText(this, it.exception.message, Toast.LENGTH_SHORT).show()
                 }
+
                 is Results.Loading -> {
-                    // Handle loading case
+                    binding.progressBar.visibility = if (it.isLoading) View.VISIBLE else View.GONE
                 }
             }
-            viewModel.resultFollowers.observe(this){
-                when(it){
+            viewModel.resultFollowers.observe(this) {
+                when (it) {
                     is Results.Success<*> -> {
-                        val data = it.data as MutableList<Item> // Assuming Followers is the correct class
-                        binding.tableLayout.getTabAt(0)?.text = "${getString(R.string.followers)} (${data.size})"
+                        val count = (it.data as? List<*>)?.size ?: 0
+                        binding.tableLayout.getTabAt(1)?.text =
+                            "${getString(R.string.followers)} ($count)"
                     }
+
                     is Results.Error -> {
-                        // Handle error case
+                        Toast.makeText(this, it.exception.message, Toast.LENGTH_SHORT).show()
                     }
+
                     is Results.Loading -> {
                         // Handle loading case
                     }
                 }
             }
         }
-
     }
-
 }
 
-fun FloatingActionButton.changeIconColor(@ColorRes color :Int) {
+// !change icon color of floating action button
+fun FloatingActionButton.changeIconColor(@ColorRes color: Int) {
 
     imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this.context, color))
 }

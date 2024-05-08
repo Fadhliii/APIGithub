@@ -20,6 +20,7 @@ class FollowFragment : Fragment() {
     private val adapter = UserAdapter { }
     private val viewModel by activityViewModels<DetailViewModel>()
     var index = 0
+    var username: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,24 +38,27 @@ class FollowFragment : Fragment() {
             adapter = this@FollowFragment.adapter
         }
 
-        when(index){
-            Followers_index -> {
-                viewModel.resultFollowers.observe(viewLifecycleOwner){
-                    manageResultFollows(it)
+        username?.let {
+            when(index){
+                Followers_index -> {
+                    viewModel.getFollowers(it) // Fetch followers data
+                    viewModel.resultFollowers.observe(viewLifecycleOwner){
+                        manageResultFollows(it)
+                    }
                 }
-            }
-            Following_index -> {
-                viewModel.resultFollowing.observe(viewLifecycleOwner){
-                    manageResultFollows(it)
+                Following_index -> {
+                    viewModel.getFollowing(it) // Fetch following data
+                    viewModel.resultFollowing.observe(viewLifecycleOwner){
+                        manageResultFollows(it)
+                    }
                 }
             }
         }
     }
-
     private fun manageResultFollows(result: Results) {
         when (result) {
             is Results.Success<*> -> {
-                adapter.setData(result.data as MutableList<Item>)
+                adapter.setData(result.data as List<Item>)
             }
             is Results.Error -> {
                 Toast.makeText(requireActivity(), result.exception.message, Toast.LENGTH_SHORT).show()
@@ -66,8 +70,12 @@ class FollowFragment : Fragment() {
     }
 
     companion object {
+//        Define the index for the fragment
         const val Following_index = 100
         const val Followers_index = 101
-        fun newInstance(index: Int) = FollowFragment().also { it.index = index }
+        fun newInstance(index: Int, username: String) = FollowFragment().also {
+            it.index = index
+            it.username = username
+        }
     }
 }

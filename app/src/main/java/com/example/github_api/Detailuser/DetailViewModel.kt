@@ -1,5 +1,6 @@
 package com.example.github_api.Detailuser
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,26 +24,27 @@ class DetailViewModel(private val db: DbModule) : ViewModel() {
             item?.let {
                 if (isFavorite) {
                     db.userDao.delete(item)
-                    resultFailFav.value=true
+                    resultFailFav.value = true
                 } else {
                     db.userDao.insert(item)
-                    resultSuccess.value=true
+                    resultSuccess.value = true
                 }
             }
             isFavorite = !isFavorite
         }
     }
 
-    fun findFavorite(id :Int, listenFavorite:() -> Unit) {
+    fun findFavorite(id: Int, listenFavorite: () -> Unit) {
         viewModelScope.launch {
             val user = db.userDao.findById(id)
-            if(user != null){
+            if (user != null) {
                 listenFavorite()
                 isFavorite = true
             }
         }
     }
 
+//    !!getDetailUser, getFollowers, getFollowing
     fun getDetailUser(username: String) {
         fetchData(username, resultDetailUser) { ApiClient.githubservice.getDetailUser(it) }
     }

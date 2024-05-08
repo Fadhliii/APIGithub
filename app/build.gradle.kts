@@ -12,7 +12,6 @@ android {
     namespace = "com.example.github_api"
     compileSdk = 34
 
-
     buildFeatures {
         viewBinding = true
         buildConfig = true
@@ -24,8 +23,13 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    defaultConfig{
+        buildConfigField("String", "KEY", "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")
+        buildConfigField("String", "BASE_URL", "https://api.github.com/")
     }
 
     buildTypes {

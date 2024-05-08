@@ -1,9 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Github_API" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Github_API" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
 <!--        <item name="colorSecondary">@color/white</item>-->
-<!--        <item name="colorPrimaryVariant">#FFFFFF</item>-->
+        <item name="colorPrimaryVariant">@color/orange</item>
+        <item name="searchViewBackgroundColor">@color/colorAccent</item>
+        <item name="myBackgroundColor">@color/white</item>
 <!--        <item name="android:textColor">#000000</item>-->
 <!--         Customize your dark theme here. -->
 <!--        <item name="colorBackground">#A6EAFF</item>-->

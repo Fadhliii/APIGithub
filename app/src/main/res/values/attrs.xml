@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="myBackgroundColor" format="color" />
+    <attr name="searchViewBackgroundColor" format="color" />
+    <attr name="searchViewColor" format="color" />
+</resources>

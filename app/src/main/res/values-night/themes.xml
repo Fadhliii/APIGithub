@@ -1,7 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Github_API" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Github_API" parent="Theme.Material3.DayNight">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="myBackgroundColor">@color/colorPrimaryDark</item>
+        <item name="searchViewBackgroundColor">@color/black</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="searchViewColor">@color/white</item>
     </style>
 </resources>

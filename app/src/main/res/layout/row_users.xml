@@ -40,10 +40,10 @@
                 android:layout_marginStart="10dp"
                 android:textSize="20dp"
                 android:textAllCaps="true"
-                android:textColor="@color/blueish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ID"
+
                 android:textStyle="bold"
                 />
 

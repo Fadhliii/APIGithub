@@ -23,6 +23,7 @@ interface UserDao {
     @Query("SELECT * FROM User WHERE id LIKE :id LIMIT 1")
     fun findById(id: Int): Item
 
+
     // used to delete a specific user from the database.
     @Delete
     fun delete(user: Item)
