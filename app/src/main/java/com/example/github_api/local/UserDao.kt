@@ -8,7 +8,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.github_api.API.MODEL.Item
 import retrofit2.http.DELETE
-
+/**
+ * Data Access Object for the users table.
+ * This is an interface that provides methods to interact with the database.
+ */
 @Dao
 interface UserDao {
     // If a user with the same primary key already exists, it will be replaced.

@@ -15,7 +15,11 @@ import com.example.github_api.R
 import com.example.github_api.UserAdapter
 import com.example.github_api.databinding.ActivityFavBinding
 import com.example.github_api.local.DbModule
-
+/**
+ * ViewModel for the Favorites feature.
+ * This ViewModel is responsible for managing the data for the Favorites feature.
+ * @property dbModule The database module used to interact with the database.
+ */
 class FavActivity : AppCompatActivity() {
 //    binding the layout
     private lateinit var binding: ActivityFavBinding
@@ -57,6 +61,7 @@ class FavActivity : AppCompatActivity() {
         }
     }
 
+    //   set the back button to finish the activity
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
